@@ -47,7 +47,13 @@ let save = (repos, callback) => {
 }
 
 const retrieve25 = (callback) => {
-  callback('temp-error');
+  Repo.find({}, (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, results);
+    }
+  });
 };
 
 module.exports.save = save;

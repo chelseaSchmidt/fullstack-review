@@ -23,6 +23,7 @@ class App extends React.Component {
           url: '/repos',
           method: 'GET',
           success: data => {
+            console.log(data);
             this.setState({
               repos: data
             });
@@ -30,6 +31,22 @@ class App extends React.Component {
           error: err => {
             console.error(err);
           }
+        });
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
+  }
+
+  componentDidMount () {
+    $.ajax({
+      url: '/repos',
+      method: 'GET',
+      success: data => {
+        console.log(data);
+        this.setState({
+          repos: data
         });
       },
       error: err => {
