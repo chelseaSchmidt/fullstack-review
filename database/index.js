@@ -26,10 +26,21 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (/* TODO */) => {
+let save = (repos, callback) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
+
+  //store promise from creating each repo object as a document via Repo model
+  const createRecords = Repo.create(repos);
+  //then, pass null and non-error result to callback
+  createRecords.then(res => {
+    callback(null, res);
+  });
+  //or catch error and pass to callback
+  createRecords.catch(err => {
+    callback(err);
+  });
 }
 
 module.exports.save = save;
