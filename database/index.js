@@ -46,4 +46,9 @@ let save = (repos, callback) => {
     });
 }
 
+const retrieve25 = (callback) => {
+  callback('temp-error');
+};
+
 module.exports.save = save;
+module.exports.retrieve25 = retrieve25;

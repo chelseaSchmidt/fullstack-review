@@ -19,7 +19,18 @@ class App extends React.Component {
       url: `/repos/${term}`,
       method: 'POST',
       success: data => {
-        console.log(data);
+        $.ajax({
+          url: '/repos',
+          method: 'GET',
+          success: data => {
+            this.setState({
+              repos: data
+            });
+          },
+          error: err => {
+            console.error(err);
+          }
+        });
       },
       error: err => {
         console.error(err);
