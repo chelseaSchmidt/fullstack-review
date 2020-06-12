@@ -12,6 +12,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.post('/repos/:user', function (req, res) {
   github.getReposByUsername(req.params.user, (err, data) => {
     if (err) {
+      console.log(err);
       res.sendStatus(503);
     } else {
       const repos = [];
@@ -26,13 +27,13 @@ app.post('/repos/:user', function (req, res) {
         condensed.ownerUrl = repo.owner.html_url;
         repos.push(condensed);
       });
-      mongo.save(repos, (err, res) => {
+      mongo.save(repos, (err, result) => {
         if (err) {
-          console.error(err);
+          console.log(err);
           res.sendStatus(503);
         } else {
           console.log('success');
-          res.sendStatus(201)
+          res.sendStatus(201);
         }
       });
     }
