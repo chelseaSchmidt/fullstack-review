@@ -14,7 +14,6 @@ app.post('/repos/:user', function (req, res) {
     if (err) {
       res.sendStatus(503);
     } else {
-      //extract needed properties from array of repo objects
       const repos = [];
       data.forEach(repo => {
         const condensed = {};
