@@ -20,8 +20,13 @@ class App extends React.Component {
     $.ajax({
       url: `/repos/${term}`,
       method: 'POST',
-      success: data => {
-        this.getRepos(true);
+      success: newImportsOrMessage => {
+        if (typeof newImportsOrMessage === 'string') {
+          alert(newImportsOrMessage);
+          this.getRepos(true, 0);
+        } else {
+          this.getRepos(true, newImportsOrMessage);
+        }
       },
       error: err => {
         console.error(err);
@@ -33,15 +38,27 @@ class App extends React.Component {
     this.getRepos(false);
   }
 
-  getRepos (wasUpdate) {
+  getRepos (wasUpdate, newImports = 0) {
+    const origRepoIds = this.state.repos.map(repo => {
+      return repo.GHid;
+    });
     $.ajax({
       url: '/repos',
       method: 'GET',
-      success: data => {
+      success: repos => {
+        const newRepoIds = repos.map(repo => {
+          return repo.GHid;
+        });
+        let newUpdates = 0;
+        newRepoIds.forEach(newRepoId => {
+          if (origRepoIds.indexOf(newRepoId) === -1) {
+            return ++newUpdates;
+          }
+        });
         this.setState({
-          repos: data,
-          newReposImported: 0,
-          reposUpdated: 0,
+          repos: repos,
+          newReposImported: newImports,
+          reposUpdated: newUpdates,
           wasUpdate: wasUpdate
         });
       },

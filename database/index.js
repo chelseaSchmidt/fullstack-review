@@ -19,14 +19,31 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos, callback) => {
+  let oldRecordsCount;
+  let newRecordsCount;
+  Repo.find({}, (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      oldRecordsCount = results.length;
+
       Repo.create(repos)
         .then(res => {
-          callback(null, res);
+          Repo.find({}, (err, results) => {
+            newRecordsCount = results.length;
+            callback(null, res, newRecordsCount - oldRecordsCount);
+          });
+
         })
         .catch(err => {
-          console.log(err);
-          callback(err);
+          if (err.errmsg.indexOf('E11000 duplicate key') > -1) {
+            callback(null, 'duplicate');
+          } else {
+            callback(err);
+          }
         });
+    }
+  });
 }
 
 const retrieve25 = (callback) => {

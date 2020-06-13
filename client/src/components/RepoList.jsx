@@ -4,7 +4,7 @@ import RepoListEntry from './RepoListEntry.jsx';
 const RepoList = (props) => {
   let importMessage = '';
   if (props.wasUpdate) {
-    importMessage = `${props.newReposImported} new repos imported, ${props.reposUpdated} repos updated`;
+    importMessage = `${props.newReposImported} new repos imported, ${props.reposUpdated} repos added to top 25`;
   }
   return (
     <div>

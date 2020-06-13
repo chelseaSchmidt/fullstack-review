@@ -27,13 +27,18 @@ app.post('/repos/:user', function (req, res) {
         condensed.ownerUrl = repo.owner.html_url;
         repos.push(condensed);
       });
-      mongo.save(repos, (err, result) => {
+      mongo.save(repos, (err, result, newImports) => {
         if (err) {
           console.log(err);
           res.sendStatus(503);
         } else {
-          console.log('success');
-          res.sendStatus(201);
+          if (result === 'duplicate') {
+            res.status(200);
+            res.send('User\'s repos have already been imported');
+          } else {
+            res.status(201);
+            res.json(newImports);
+          }
         }
       });
     }
