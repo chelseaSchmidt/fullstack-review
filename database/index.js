@@ -51,7 +51,18 @@ const retrieve25 = (callback) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, results);
+      results.sort((repoA, repoB) => {
+        if (repoA.forks > repoB.forks) {
+          return -1;
+        }
+        if (repoA.forks < repoB.forks) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      const filtered25 = results.slice(0, 25);
+      callback(null, filtered25);
     }
   });
 };
