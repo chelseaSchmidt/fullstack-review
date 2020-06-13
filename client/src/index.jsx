@@ -11,7 +11,6 @@ class App extends React.Component {
     this.state = {
       repos: []
     }
-
   }
 
   search (term) {
@@ -19,19 +18,7 @@ class App extends React.Component {
       url: `/repos/${term}`,
       method: 'POST',
       success: data => {
-        $.ajax({
-          url: '/repos',
-          method: 'GET',
-          success: data => {
-            console.log(data);
-            this.setState({
-              repos: data
-            });
-          },
-          error: err => {
-            console.error(err);
-          }
-        });
+        this.getRepos();
       },
       error: err => {
         console.error(err);
@@ -40,11 +27,14 @@ class App extends React.Component {
   }
 
   componentDidMount () {
+    this.getRepos();
+  }
+
+  getRepos () {
     $.ajax({
       url: '/repos',
       method: 'GET',
       success: data => {
-        console.log(data);
         this.setState({
           repos: data
         });
