@@ -4,7 +4,10 @@ const Promise = require('bluebird');
 mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/fetcher'); //config var
 
 let repoSchema = mongoose.Schema({
-  GHid: Number,
+  GHid: {
+    type: Number,
+    unique: true
+  },
   name: String,
   url: String,
   forks: Number,
@@ -16,22 +19,7 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos, callback) => {
-  const newRepos = [];
-  const existPromises = [];
-  const newRecordPromises = [];
-
-  repos.forEach(repo => {
-    existPromises.push(Repo.findOne({GHid: repo.GHid}));
-  });
-
-  Promise.all(existPromises)
-    .then(existsArray => {
-      existsArray.forEach((exists, i) => {
-        if (!exists) {
-          newRepos.push(repos[i]);
-        }
-      });
-      Repo.create(newRepos)
+      Repo.create(repos)
         .then(res => {
           callback(null, res);
         })
@@ -39,11 +27,6 @@ let save = (repos, callback) => {
           console.log(err);
           callback(err);
         });
-    })
-    .catch(err => {
-      console.log(err);
-      callback(err);
-    });
 }
 
 const retrieve25 = (callback) => {
