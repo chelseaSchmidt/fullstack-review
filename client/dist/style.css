@@ -1,5 +1,27 @@
+#list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.repo {
+  display: flex;
+  flex-direction: row;
+  width: 456px;
+}
+
+.repo-forks {
+  width: 50px;
+}
+
+.repo-name {
+  width: 200px;
+}
+
+.repo-owner {
+  width: 200px;
+}
+
 .repo-forks, .repo-name, .repo-owner {
   display: inline-block;
-  padding: 5px;
-  border: 1px solid black;
+  border: solid black 1px;
 }

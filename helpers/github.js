@@ -1,6 +1,7 @@
 const axios = require('axios');
 const config = require('../config.js');
 
+//note API limits to 30 by default - might want to override
 let getReposByUsername = (user, callback) => {
   let options = {
     url: `https://api.github.com`,
