@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 
-mongoose.connect('mongodb://localhost/fetcher');
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/fetcher'); //config var
 
 let repoSchema = mongoose.Schema({
   GHid: Number,
